@@ -11,7 +11,7 @@
     },
     "bdbf199216cd4faf8aa33275fda0e57a": {
         "id": "bdbf199216cd4faf8aa33275fda0e57a",
-        "title": "Make task widget update after editing the title",
+        "title": "Make task widget update after editing the title!",
         "done": false
     },
     "2e872e97e5934f85b5219346e0bb1b58": {
@@ -27,6 +27,11 @@
     "ce0013da51634760a280e0e2203928b2": {
         "id": "ce0013da51634760a280e0e2203928b2",
         "title": "Make new task appear in TUI",
+        "done": false
+    },
+    "c0d17d2b43c14c82861466e540496cb4": {
+        "id": "c0d17d2b43c14c82861466e540496cb4",
+        "title": "New task",
         "done": false
     }
 }

@@ -18,7 +18,8 @@ from textual.widgets import (
     Static,
 )
 
-from tasks.core import Task, Tasks
+from tasks.core import Task as Task
+from tasks.core import Tasks
 
 
 class TaskTitleInputScreen(ModalScreen[str]):
@@ -65,20 +66,27 @@ class TasksListItem(Static):
     }
     """
 
+    task_id: reactive[str] = reactive("")
+
     def __init__(self, task_id: str) -> None:
         super().__init__()
-        self.task_id = task_id
         self.tasks: Tasks = self.app.tasks  # type: ignore
+        self.set_reactive(TasksListItem.task_id, task_id)
+        # self.task = self.tasks.get(self.task_id)
 
     def compose(self) -> ComposeResult:  # noqa: D102
         # tasks: Tasks = self.app.tasks  # type: ignore
         task: Task = self.tasks.get(self.task_id)
         yield HorizontalGroup(
-            Checkbox(value=task.done, id="check"),
-            Label(f"[b]{task.title}[/b]"),
+            Checkbox(value=task.done, id="checkbox"),
+            Label(f"[b]{task.title}[/b]", id="title"),
             Button("Edit :pen:", id="edit"),
             Button("Delete :wastebasket:", variant="error", id="delete"),
         )
+        
+    def watch_task_id(self, new_task_id: str) -> None:
+        task = self.tasks.get(new_task_id)
+        self.query_one("#title").renderable = task.title
 
     @on(Button.Pressed, "#delete")
     def delete_task(self) -> None:  # noqa: D102
@@ -102,7 +110,7 @@ class TasksListItem(Static):
             handle_title_change,
         )
 
-    @on(Checkbox.Changed, "#check")
+    @on(Checkbox.Changed, "#checkbox")
     def change_task_state(self) -> None:  # noqa: D102
         task = self.tasks.get(self.task_id)
         task.done = not task.done
@@ -116,6 +124,7 @@ class TasksApp(App):
     BINDINGS = [
         ("d", "toggle_dark", "Toggle dark mode"),
         ("a", "add_task", "Add a new task"),
+        ("q", "quit", "Quit the application"),
     ]
 
     def __init__(self, tasks: Tasks) -> None:
@@ -137,6 +146,7 @@ class TasksApp(App):
 
     def action_add_task(self) -> None:
         """Add a new task."""
+
         def handle_task_input(result: str | None) -> None:
             if result is None or result == "":
                 self.app.notify("A task cannot have an empty title!", severity="error")
@@ -147,3 +157,8 @@ class TasksApp(App):
             self.refresh()
 
         self.push_screen(TaskTitleInputScreen(), handle_task_input)
+    
+    def action_quit(self) -> None:
+        """Quit the application."""
+        self.exit(message="Exited!")
+
