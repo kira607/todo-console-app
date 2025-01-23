@@ -1,0 +1,17 @@
+{
+    "5d705bcfde0f4db3875d458f10359215": {
+        "id": "5d705bcfde0f4db3875d458f10359215",
+        "title": "Tasks deletion",
+        "done": true
+    },
+    "c1d92acb9b714a2d87a9326c08ae9706": {
+        "id": "c1d92acb9b714a2d87a9326c08ae9706",
+        "title": "Setup TUI application",
+        "done": false
+    },
+    "e751c320d7ef43ea88cabc95bc548660": {
+        "id": "e751c320d7ef43ea88cabc95bc548660",
+        "title": "Make functioning checkbox",
+        "done": false
+    }
+}

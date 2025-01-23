@@ -1,0 +1,221 @@
+[build-system]
+requires = ["setuptools>=74.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "todo-console-app"
+description = "Todo CLI app"
+readme = "README.md"
+authors = [
+    {name = "Kirill", email = "kirill.lesckin@gmail.com"},
+]
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.12"
+dependencies = [
+    "typer",
+    "rich",
+    "pydantic",
+    "textual",
+    "pyyaml",
+]
+dynamic = ["version"]
+
+[project.urls]
+Repository = "https://github.com/kira607/todo-console-app"
+
+[project.optional-dependencies]
+all = ["todo-console-app[dev,test]"]
+dev = [
+    "mypy",
+    "ruff",
+    "black",
+    "isort",
+    "tox",
+    "pydocstyle",
+]
+test = [
+    "pytest",
+]
+
+[project.scripts]
+tasks = "tasks.cli.main:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "tasks.__version__"}
+
+###################################################################
+# pytest configurations
+###################################################################
+
+[tool.pytest]
+filterwarnings = [
+    "ignore::DeprecationWarning"
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--cov=tasks",
+    # generate report with details of all (non-pass) test results
+    "-ra",
+    # show local variables in tracebacks
+    "--showlocals",
+    # verbose output
+    "--verbose",
+]
+norecursedirs = [
+    ".git",
+    ".pytest_cache",
+    ".vscode",
+    ".venv",
+    ".mypy_cache",
+]
+testpaths = [
+    "tests",
+]
+
+###################################################################
+# black
+###################################################################
+
+[tool.black]
+line-length = 120
+target-version = ['py312']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.pytest_cache
+    | \.tox
+    | \.vscode
+    | __pycache__
+    | _build
+    | buck-out
+    | build
+    | dist
+    | .venv
+)/
+'''
+
+###################################################################
+# isort
+###################################################################
+
+[tool.isort]
+profile = "black"
+sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
+py_version = 312
+line_length = 120
+multi_line_output = 3
+include_trailing_comma = true
+lines_after_imports = 2
+skip = [
+    "build/",
+    "dist/",
+    "docs/",
+    ".git",
+    ".eggs",
+    "__pycache__",
+    "*.egg-info",
+    ".gitignore",
+    "README.md",
+    "scratches/",
+    ".venv",
+]
+
+###################################################################
+# pydocstyle
+###################################################################
+
+[tool.pydocstyle]
+match-dir = "(?!tests)(?!resources)(?!docs)[^\\.].*"
+match = "(?!test)(?!setup)[^\\._].*\\.py"
+inherit = false
+ignore = ["D200", "D203", "D213", "D406", "D407", "D107"] # Google conventions
+
+###################################################################
+# mypy
+###################################################################
+
+[tool.mypy]
+mypy_path = "src"
+
+enable_incomplete_feature = "NewGenericSyntax"
+
+# Start off with these
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+# Getting these passing should be easy
+strict_equality = true
+strict_concatenate = true
+
+# Strongly recommend enabling this one as soon as you can
+check_untyped_defs = true
+
+# These shouldn't be too much additional work, but may be tricky to
+# get passing if you use a lot of untyped libraries
+# disallow_subclassing_any = true
+# disallow_untyped_decorators = true
+# disallow_any_generics = true
+
+# These next few are various gradations of forcing use of type annotations
+disallow_untyped_calls = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+
+# This one isn't too hard to get passing, but return on investment is lower
+no_implicit_reexport = true
+
+# This one can be tricky to get passing if you use a lot of untyped libraries
+# warn_return_any = true
+
+###################################################################
+# ruff
+###################################################################
+
+[tool.ruff]
+fix = true
+indent-width = 4
+line-length = 120
+preview = true
+src = ["src", "tests"]
+target-version = "py312"
+
+[tool.ruff.format]
+docstring-code-format = true
+preview = true
+
+[tool.ruff.lint]
+preview = true
+ignore = ["D107"]
+select = [
+    "F",
+    "ANN",
+    "B",
+    "A",
+    "C4",
+    "E",
+    "W",
+    "I",
+    "N",
+    "D",
+    "Q",
+    "SLF",
+    "RET",
+    "SIM",
+    "UP",
+    "INP",
+]
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
+
+[tool.ruff.lint.pydocstyle]
+ignore-decorators = ["typing.overload"]
