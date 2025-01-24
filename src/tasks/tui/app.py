@@ -1,144 +1,36 @@
 """Main TUI application class."""
 
-from pathlib import Path
-
-from textual import on
-from textual.app import App, ComposeResult, RenderResult
-from textual.containers import Grid, HorizontalGroup, VerticalScroll
-from textual.reactive import reactive
-from textual.screen import ModalScreen
-from textual.widget import Widget
-from textual.widgets import (
-    Button,
-    Checkbox,
-    Footer,
-    Header,
-    Input,
-    Label,
-    Static,
-)
+from textual.app import App, ComposeResult
+from textual.widgets import Footer, Header
 
 from tasks.core import Task as Task
 from tasks.core import Tasks
 
-
-class TaskTitleInputScreen(ModalScreen[str]):
-    """Task title input screen."""
-
-    def __init__(self, task_id: str | None = None) -> None:
-        super().__init__()
-        self.task_id = task_id
-        self.tasks: Tasks = self.app.tasks  # type: ignore
-        self.input = Input(value=None, placeholder="Type a task title...")
-
-    def compose(self) -> ComposeResult:  # noqa: D102
-        task = self.tasks.get(self.task_id) if self.task_id else None
-        if task:
-            self.input.value = task.title
-        yield Grid(
-            Label("Input a new name for task:"),
-            self.input,
-            Button("Cancel", variant="error", id="cancel"),
-            Button("Submit", variant="success", id="submit"),
-        )
-
-    @on(Input.Submitted)
-    @on(Button.Pressed, "#submit")
-    def submit_input(self) -> None:  # noqa: D102
-        self.app.notify(f'Task title changed: "{self.input.value}"')
-        self.dismiss(self.input.value)
-
-    @on(Button.Pressed, "#cancel")
-    def cancel_input(self) -> None:  # noqa: D102
-        self.app.notify("Task editing canceled", severity="warning")
-        self.dismiss(None)
-
-
-class TasksListItem(Static):
-    """A tasks list item widget."""
-
-    DEFAULT_CSS = """
-    HorizontalGroup {
-        content-align: center middle;
-    }
-    Button {
-        align-horizontal: right;
-    }
-    """
-
-    task_id: reactive[str] = reactive("")
-
-    def __init__(self, task_id: str) -> None:
-        super().__init__()
-        self.tasks: Tasks = self.app.tasks  # type: ignore
-        self.set_reactive(TasksListItem.task_id, task_id)
-        # self.task = self.tasks.get(self.task_id)
-
-    def compose(self) -> ComposeResult:  # noqa: D102
-        # tasks: Tasks = self.app.tasks  # type: ignore
-        task: Task = self.tasks.get(self.task_id)
-        yield HorizontalGroup(
-            Checkbox(value=task.done, id="checkbox"),
-            Label(f"[b]{task.title}[/b]", id="title"),
-            Button("Edit :pen:", id="edit"),
-            Button("Delete :wastebasket:", variant="error", id="delete"),
-        )
-        
-    def watch_task_id(self, new_task_id: str) -> None:
-        task = self.tasks.get(new_task_id)
-        self.query_one("#title").renderable = task.title
-
-    @on(Button.Pressed, "#delete")
-    def delete_task(self) -> None:  # noqa: D102
-        self.tasks.delete(self.task_id)
-        self.remove()
-
-    @on(Button.Pressed, "#edit")
-    def edit_task_title(self) -> None:  # noqa: D102
-        def handle_title_change(result: str | None) -> None:
-            if result is None or result == "":
-                self.app.notify("A task cannot have an empty title!", severity="error")
-                return
-            task = self.tasks.get(self.task_id)
-            task.title = result
-            self.tasks.update(task)
-            self.app.notify("Task title updated!")
-            self.refresh()
-
-        self.app.push_screen(
-            TaskTitleInputScreen(self.task_id),
-            handle_title_change,
-        )
-
-    @on(Checkbox.Changed, "#checkbox")
-    def change_task_state(self) -> None:  # noqa: D102
-        task = self.tasks.get(self.task_id)
-        task.done = not task.done
-        self.tasks.update(task)
+from .tasks_list import TasksList
 
 
 class TasksApp(App):
     """A Textual app to manage tasks."""
 
-    # CSS_PATH = Path(Path(__file__).parent, "tasksapp.tcss").resolve().__str__()
     BINDINGS = [
         ("d", "toggle_dark", "Toggle dark mode"),
         ("a", "add_task", "Add a new task"),
-        ("q", "quit", "Quit the application"),
+        ("q", "quit_app", "Quit the application"),
     ]
+
+    tasks: Tasks
 
     def __init__(self, tasks: Tasks) -> None:
         super().__init__()
         self.tasks = tasks
-        self.tasks_list = []
 
     def compose(self) -> ComposeResult:
-        """Create child widgets for the app."""
+        """Compose widget."""
+        tasks_list = TasksList()
+        tasks_list.tasks = {task.id: task for task in self.tasks}
         yield Header()
-        self.tasks_list = [TasksListItem(task.id) for task in self.tasks]
-        yield VerticalScroll(*self.tasks_list)
+        yield tasks_list
         yield Footer()
-        # yield Hello()
 
     def action_toggle_dark(self) -> None:
         """Toggle dark mode."""
@@ -146,19 +38,8 @@ class TasksApp(App):
 
     def action_add_task(self) -> None:
         """Add a new task."""
+        self.query_one("TasksList").add_task()  # type: ignore
 
-        def handle_task_input(result: str | None) -> None:
-            if result is None or result == "":
-                self.app.notify("A task cannot have an empty title!", severity="error")
-                return
-            task_id = self.tasks.add(result)
-            self.tasks_list.append(TasksListItem(task_id))
-            self.app.notify("Created a new task!")
-            self.refresh()
-
-        self.push_screen(TaskTitleInputScreen(), handle_task_input)
-    
-    def action_quit(self) -> None:
+    def action_quit_app(self) -> None:
         """Quit the application."""
         self.exit(message="Exited!")
-

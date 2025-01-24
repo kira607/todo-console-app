@@ -6,13 +6,13 @@
     },
     "e751c320d7ef43ea88cabc95bc548660": {
         "id": "e751c320d7ef43ea88cabc95bc548660",
-        "title": "Make functioning checkbox in TUI...",
+        "title": "Make functioning checkbox in TUI",
         "done": true
     },
     "bdbf199216cd4faf8aa33275fda0e57a": {
         "id": "bdbf199216cd4faf8aa33275fda0e57a",
         "title": "Make task widget update after editing the title!",
-        "done": false
+        "done": true
     },
     "2e872e97e5934f85b5219346e0bb1b58": {
         "id": "2e872e97e5934f85b5219346e0bb1b58",
@@ -22,16 +22,11 @@
     "5545398dc3cf4284beedd4a5836e8561": {
         "id": "5545398dc3cf4284beedd4a5836e8561",
         "title": "Make TUI tasks list pettier - buttons to the right",
-        "done": false
+        "done": true
     },
     "ce0013da51634760a280e0e2203928b2": {
         "id": "ce0013da51634760a280e0e2203928b2",
         "title": "Make new task appear in TUI",
-        "done": false
-    },
-    "c0d17d2b43c14c82861466e540496cb4": {
-        "id": "c0d17d2b43c14c82861466e540496cb4",
-        "title": "New task",
-        "done": false
+        "done": true
     }
 }

@@ -59,10 +59,10 @@ def root(
         print(__version__)
         return
 
-    # win_path = r"C:\Users\kiril\programming\todo-console-app\tasks.json"
-    unix_path = "/home/kleskin/programming/todo-console-app/tasks.json"
+    win_path = r"C:\Users\kiril\programming\todo-console-app\tasks.json"
+    # unix_path = "/home/kleskin/programming/todo-console-app/tasks.json"
     ctx.obj = {
-        "tasks": Tasks(Path(unix_path)),
+        "tasks": Tasks(Path(win_path)),
     }
 
 
