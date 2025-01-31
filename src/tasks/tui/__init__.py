@@ -1,3 +1,3 @@
-"""Text based tasks interface."""
+"""Text based interface."""
 
 from .app import TasksApp as TasksApp

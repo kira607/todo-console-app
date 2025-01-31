@@ -20,6 +20,7 @@ dependencies = [
     "pydantic",
     "textual",
     "pyyaml",
+    "platformdirs",
 ]
 dynamic = ["version"]
 
@@ -41,7 +42,7 @@ test = [
 ]
 
 [project.scripts]
-tasks = "tasks.cli.main:main"
+tasks = "tasks.cli.app:run_cli"
 
 [tool.setuptools.dynamic]
 version = {attr = "tasks.__version__"}
