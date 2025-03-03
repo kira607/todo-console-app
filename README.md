@@ -4,7 +4,7 @@ A simple teminal app for managing tasks.
 
 ## Features
 
-- [ ] Multiple tasks lists.
+- [x] Multiple tasks lists.
 - [x] Autocreated default list (on first use).
 - [ ] Different task statuses (tasks list specific).
 - [ ] Tasks grouping.
@@ -20,10 +20,9 @@ A simple teminal app for managing tasks.
 - [x] Add debug module.
 - [x] Fix logging leveling: ERROR and CRITICAL are printed all times; WARNING, INFO, DEBUG are printed with each -v option.
 - [x] Make logging rich
-- [ ] Make able to manage multiple tasks files with a separate `lists` module.
+- [x] Make able to manage multiple tasks files with a separate `lists` module.
 - [ ] Tasks list should come in a pretty `rich` table.
 - [ ] Emoji or colorful task status.
-- [ ] 
 
 - [ ] Created at
   - [ ] Add `created_at` attribute to a task.

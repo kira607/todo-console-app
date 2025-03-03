@@ -6,12 +6,15 @@ import traceback
 
 import typer
 from rich.console import Console
+from rich.markdown import Markdown
 
 from tasks import APP_NAME, APP_VERSION
+from tasks.cli.errors import NoActiveListError, NoTasksListsError
 from tasks.logging import setup_logging
 
 from .context import ContextObject
 from .debug import debug_cli
+from .lists import lists_cli
 from .tasks import tasks_cli
 
 logger = logging.getLogger()
@@ -38,7 +41,6 @@ def root_callback(
 ) -> None:
     """Simple todo CLI app."""  # noqa: D401
     setup_logging(verbose)
-    logger.debug(f"{verbose=}")
 
     if version:
         console.print(f"{APP_NAME} {APP_VERSION}")
@@ -58,7 +60,8 @@ def clean_terminate(err: Exception) -> None:
         # NotADirectoryError,
         # TimeoutError,
     ) + (
-        # MyAppException,
+        NoActiveListError,
+        NoTasksListsError,
         # yaml.parser.ParserError,
         # sh.ErrorReturnCode,
     )
@@ -68,13 +71,14 @@ def clean_terminate(err: Exception) -> None:
         # Fetch extra error informations
         rc = int(getattr(err, "rc", getattr(err, "errno", 1)))
         advice = getattr(err, "advice", None)
+        console.print(f"[bold red]{err.message}[/bold red]")
+        # logger.error(f"MyApp exited with error {err.__class__.__name__} ({rc})")
+
         if advice:
-            logger.warning(advice)
+            console.print(f"[bold blue]Hint[/bold blue]: {advice}")
 
         # Log error and exit
-        logger.error(err)
-        err_name = err.__class__.__name__
-        logger.critical("MyApp exited with error %s (%s)", err_name, rc)
+        # err_name = err.__class__.__name__
         sys.exit(rc)
 
     # Developper bug catchall
@@ -90,6 +94,7 @@ def run_cli() -> None:
     try:
         tasks_cli.callback()(root_callback)
         tasks_cli.add_typer(debug_cli, name="debug")
+        tasks_cli.add_typer(lists_cli, name="lists")
         return tasks_cli()
     except Exception as err:
         clean_terminate(err)

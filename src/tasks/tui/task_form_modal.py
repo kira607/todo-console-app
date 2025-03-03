@@ -6,8 +6,7 @@ from textual.containers import Container, Horizontal
 from textual.screen import ModalScreen
 from textual.widgets import Button, Input, Label
 
-from tasks.core import Task as Task
-from tasks.core import Tasks
+from tasks.core import TasksList
 
 
 class TaskFormModal(ModalScreen[str]):
@@ -42,7 +41,7 @@ class TaskFormModal(ModalScreen[str]):
     def __init__(self, task_id: str | None = None) -> None:
         super().__init__()
         self.task_id = task_id
-        self.tasks: Tasks = self.app.tasks  # type: ignore
+        self.tasks: TasksList = self.app.tasks  # type: ignore
         self.input = Input(value=None, placeholder="Enter a task title...")
 
     def compose(self) -> ComposeResult:  # noqa: D102

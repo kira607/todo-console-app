@@ -1,47 +1,55 @@
 {
-    "c1d92acb9b714a2d87a9326c08ae9706": {
-        "id": "c1d92acb9b714a2d87a9326c08ae9706",
-        "title": "Setup TUI application",
-        "done": true
-    },
-    "e751c320d7ef43ea88cabc95bc548660": {
-        "id": "e751c320d7ef43ea88cabc95bc548660",
-        "title": "Make functioning checkbox in TUI",
-        "done": true
-    },
-    "bdbf199216cd4faf8aa33275fda0e57a": {
-        "id": "bdbf199216cd4faf8aa33275fda0e57a",
-        "title": "Make task widget update after editing the title!",
-        "done": true
-    },
-    "2e872e97e5934f85b5219346e0bb1b58": {
-        "id": "2e872e97e5934f85b5219346e0bb1b58",
-        "title": "Make TUI able to add a new task",
-        "done": true
-    },
-    "5545398dc3cf4284beedd4a5836e8561": {
-        "id": "5545398dc3cf4284beedd4a5836e8561",
-        "title": "Make TUI tasks list pettier - buttons to the right",
-        "done": true
-    },
-    "ce0013da51634760a280e0e2203928b2": {
-        "id": "ce0013da51634760a280e0e2203928b2",
-        "title": "Make new task appear in TUI",
-        "done": true
-    },
-    "eafcfb36e18046fa96cc9adb126766ec": {
-        "id": "eafcfb36e18046fa96cc9adb126766ec",
-        "title": "Setup repo everywhere",
-        "done": true
-    },
-    "422cf702d7874b47830b639dc87c4fe4": {
-        "id": "422cf702d7874b47830b639dc87c4fe4",
-        "title": "Make tasks file path configurable",
-        "done": false
-    },
-    "c925945b2bbb428f81a0f1bb5629fa8b": {
-        "id": "c925945b2bbb428f81a0f1bb5629fa8b",
-        "title": "How to proceed with tasks lists?",
-        "done": false
+    "title": 42,
+    "tasks": {
+        "c1d92acb9b714a2d87a9326c08ae9706": {
+            "id": "c1d92acb9b714a2d87a9326c08ae9706",
+            "title": "Setup TUI application",
+            "done": true
+        },
+        "e751c320d7ef43ea88cabc95bc548660": {
+            "id": "e751c320d7ef43ea88cabc95bc548660",
+            "title": "Make functioning checkbox in TUI",
+            "done": true
+        },
+        "bdbf199216cd4faf8aa33275fda0e57a": {
+            "id": "bdbf199216cd4faf8aa33275fda0e57a",
+            "title": "Make task widget update after editing the title!",
+            "done": true
+        },
+        "2e872e97e5934f85b5219346e0bb1b58": {
+            "id": "2e872e97e5934f85b5219346e0bb1b58",
+            "title": "Make TUI able to add a new task",
+            "done": true
+        },
+        "5545398dc3cf4284beedd4a5836e8561": {
+            "id": "5545398dc3cf4284beedd4a5836e8561",
+            "title": "Make TUI tasks list pettier - buttons to the right",
+            "done": true
+        },
+        "ce0013da51634760a280e0e2203928b2": {
+            "id": "ce0013da51634760a280e0e2203928b2",
+            "title": "Make new task appear in TUI",
+            "done": true
+        },
+        "eafcfb36e18046fa96cc9adb126766ec": {
+            "id": "eafcfb36e18046fa96cc9adb126766ec",
+            "title": "Setup repo everywhere",
+            "done": true
+        },
+        "422cf702d7874b47830b639dc87c4fe4": {
+            "id": "422cf702d7874b47830b639dc87c4fe4",
+            "title": "Make tasks file path configurable",
+            "done": false
+        },
+        "c925945b2bbb428f81a0f1bb5629fa8b": {
+            "id": "c925945b2bbb428f81a0f1bb5629fa8b",
+            "title": "How to proceed with tasks lists?",
+            "done": false
+        },
+        "44e9209244e143a19d259ae36fc617fe": {
+            "id": "44e9209244e143a19d259ae36fc617fe",
+            "title": "This is a new task",
+            "done": false
+        }
     }
 }

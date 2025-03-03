@@ -3,9 +3,6 @@
 from textual.app import App, ComposeResult
 from textual.widgets import Footer, Header
 
-from tasks.core import Task as Task
-from tasks.core import Tasks
-
 from .tasks_list import TasksList
 
 
@@ -18,9 +15,9 @@ class TasksApp(App):
         ("q", "quit_app", "Quit the application"),
     ]
 
-    tasks: Tasks
+    tasks: TasksList
 
-    def __init__(self, tasks: Tasks) -> None:
+    def __init__(self, tasks: TasksList) -> None:
         super().__init__()
         self.tasks = tasks
 

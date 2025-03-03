@@ -14,7 +14,7 @@ logger = logging.getLogger()
 class AppConfig(BaseModel):
     """Application global configuration."""
 
-    active_list: Path
+    active_list: Path | None
     task_lists: list[Path]
 
 
@@ -37,6 +37,7 @@ DEFAULT_CONFIG = f"""{{
     ]
 }}
 """
+"""Default configuration json string."""
 
 
 def _default_setup() -> AppConfig:
@@ -60,7 +61,7 @@ def _default_setup() -> AppConfig:
     # Fill default list with something
     # This is needed to pass file validity check
     with DEFAULT_LIST_PATH.open("w") as f:
-        f.write("{}")
+        f.write('{"title": "Default", "tasks": {}}')
 
     # Return default configuration
     return AppConfig.model_validate_json(DEFAULT_CONFIG)
@@ -87,3 +88,10 @@ def load_app_config() -> AppConfig:
     except ValidationError:
         logger.warning("Config file is corrupted, overwriting with the default config")
         return _default_setup()
+
+
+def save_app_config(config: AppConfig) -> None:
+    """Save app config to a file."""
+    with CONFIG_FILE_PATH.open("w") as f:
+        f.write(config.model_dump_json(indent=4))
+

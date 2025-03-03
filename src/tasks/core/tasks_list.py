@@ -18,13 +18,23 @@ class TaskEncoder(json.JSONEncoder):
         return super().default(o)
 
 
-class Tasks:
-    """Handler of a tasks list stored in a json file."""
+class TasksList:
+    """A handler to operate on a single tasks list."""
 
     def __init__(self, path: Path | str) -> None:
         self.path = Path(path)
+        self.title = ""
         self.tasks: dict[str, Task] = {}
         self._load()
+
+    @property
+    def completed_number(self) -> int:
+        """Get a number of completed tasks."""
+        completed = 0
+        for task in self.tasks.values():
+            if task.done:
+                completed += 1
+        return completed
 
     def at(self, index: int) -> Task | None:
         """Get a task by index.
@@ -82,14 +92,11 @@ class Tasks:
         with self.path.open("r") as f:
             raw_text = f.read()
 
-        if raw_text == "":
-            self.tasks = {}
-            return
-
-        data: dict[str, dict] = json.loads(raw_text)
-        self.tasks = {k: Task(v["title"], task_id=v["id"], done=v["done"]) for k, v in data.items()}
+        data: dict[str, str | dict] = json.loads(raw_text)
+        self.title = data["title"]  # type: ignore
+        self.tasks = {k: Task(v["title"], task_id=v["id"], done=v["done"]) for k, v in data["tasks"].items()}  # type: ignore
 
     def _save(self) -> None:
         """Save current tasks list to a file."""
         with self.path.open("w") as f:
-            json.dump(self.tasks, f, indent=4, cls=TaskEncoder)
+            json.dump({"title": self.title, "tasks": self.tasks}, f, indent=4, cls=TaskEncoder)

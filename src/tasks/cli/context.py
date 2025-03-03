@@ -3,8 +3,9 @@
 import logging
 
 from tasks.app_config import AppConfig, load_app_config
+from tasks.cli.errors import NoActiveListError
 from tasks.cli.utils import is_valid_json_file_path
-from tasks.core import Tasks
+from tasks.core import TasksList
 
 logger = logging.getLogger()
 
@@ -21,7 +22,7 @@ class ContextObject:
     """
 
     _config: AppConfig
-    _tasks: Tasks
+    _tasks: TasksList
 
     @property
     def config(self) -> AppConfig:
@@ -31,15 +32,23 @@ class ContextObject:
         return self._config
 
     @property
-    def tasks(self) -> Tasks:
-        """Get :class:`Tasks` instance for currently selected list."""
+    def tasks(self) -> TasksList:
+        """Get :class:`Tasks` instance for currently selected list.
+
+        :raises NoActiveListError: Active tasks list is not set.
+        :return TasksList: A tasks list handler.
+        """
+        config = self.config
+
+        if config.active_list is None:
+            raise NoActiveListError()
+
         if getattr(self, "_tasks", None) is None:
-            config = self.config
             valid, error = is_valid_json_file_path(config.active_list)
 
             if not valid:
                 logger.warning(f"Path: {config.active_list} is not a valid json file: {error}")
 
-            self._tasks = Tasks(config.active_list)
+            self._tasks = TasksListWidget(config.active_list)
 
         return self._tasks

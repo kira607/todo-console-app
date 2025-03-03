@@ -7,7 +7,8 @@ from textual.reactive import reactive
 from textual.widget import Widget
 from textual.widgets import Button
 
-from tasks.core import Task, Tasks
+from tasks.core import Task
+from tasks.core import TasksList as TasksListRepo
 
 from .task_form_modal import TaskFormModal
 from .tasks_list_item import TasksListItem
@@ -18,6 +19,9 @@ class TasksList(Widget):
 
     DEFAULT_CSS = """
     TasksList > VerticalScroll > Button {
+        align: center top;
+    }
+    #add_task {
         align: center top;
     }
     """
@@ -56,7 +60,7 @@ class TasksList(Widget):
 
     def on_tasks_list_item_deleted(self, event: TasksListItem.Deleted) -> None:
         """Remove a task when TasksListItem emited a Delete message."""
-        tasks: Tasks = self.app.tasks  # type: ignore
+        tasks: TasksListRepo = self.app.tasks  # type: ignore
         task = tasks.get(event.task_id)
         self.app.notify(f"Task deleted: '{task.title}'")
         del self.tasks[event.task_id]
@@ -65,7 +69,7 @@ class TasksList(Widget):
 
     def on_tasks_list_item_state_changed(self, event: TasksListItem.StateChanged) -> None:
         """Change the state of a task when TasksListItem emited a StateChanged message."""
-        tasks: Tasks = self.app.tasks  # type: ignore
+        tasks: TasksListRepo = self.app.tasks  # type: ignore
         task = tasks.get(event.task_id)
         task.done = not task.done
         tasks.update(task)
@@ -74,7 +78,7 @@ class TasksList(Widget):
 
     def on_tasks_list_item_title_changed(self, event: TasksListItem.TitleChanged) -> None:
         """Change the title of a task when TasksListItem emited a TitleChanged message."""
-        tasks: Tasks = self.app.tasks  # type: ignore
+        tasks: TasksListRepo = self.app.tasks  # type: ignore
         task = self.tasks[event.task_id]
         task.title = event.new_title
         tasks.update(task)

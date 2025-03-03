@@ -3,10 +3,12 @@
 import logging
 
 import typer
+from rich.console import Console
 
-from tasks.core import Tasks
+from tasks.core import TasksList
 from tasks.tui import TasksApp
 
+console = Console()
 logger = logging.getLogger()
 tasks_cli = typer.Typer(
     help="Simple todo CLI app.",
@@ -24,14 +26,15 @@ def cli_help(ctx: typer.Context) -> None:
 @tasks_cli.command("tui")
 def cli_tui(ctx: typer.Context) -> None:
     """Open a TUI application."""
-    tasks: Tasks = ctx.obj.tasks
+    tasks: TasksList = ctx.obj.tasks
     TasksApp(tasks).run()
 
 
 @tasks_cli.command("ls")
 def list_tasks(ctx: typer.Context) -> None:
     """List all tasks."""
-    tasks: Tasks = ctx.obj.tasks
+    tasks: TasksList = ctx.obj.tasks
+    console.print(f"[bold]{tasks.title}[/bold]")
     for task in tasks:
         done = "X" if task.done else " "
         print(f"[{done}] {task.title}")
@@ -50,7 +53,7 @@ def add_task(
     ),
 ) -> None:
     """Add a new task to a task list."""
-    tasks: Tasks = ctx.obj.tasks
+    tasks: TasksList = ctx.obj.tasks
     if not title:
         title = input("Add task title: ")
     tasks.add(title)
@@ -59,7 +62,7 @@ def add_task(
 @tasks_cli.command("pick")
 def pick_task(ctx: typer.Context) -> None:
     """Pick a task for editing."""
-    tasks: Tasks = ctx.obj.tasks
+    tasks: TasksList = ctx.obj.tasks
 
     if len(tasks) == 0:
         print("No tasks")
