@@ -54,7 +54,7 @@ def cli_help(ctx: typer.Context) -> None:
 @lists_cli.command("active")
 def show_active_list(ctx: typer.Context) -> None:
     """Show currently active tasks list."""
-    tasks: TasksListWidget = ctx.obj.tasks
+    tasks: TasksList = ctx.obj.tasks
     console.print(f"{tasks.title} ([bold]{ctx.obj.config.active_list}[/bold])")
 
 
@@ -112,7 +112,7 @@ def add_tasks_list(
 
     # check if file contents are valid
     try:
-        TasksListWidget(list_path)
+        TasksList(list_path)
     except Exception:
         console.print("not a tasks list")
         return

@@ -8,7 +8,7 @@
         },
         "e751c320d7ef43ea88cabc95bc548660": {
             "id": "e751c320d7ef43ea88cabc95bc548660",
-            "title": "Make functioning checkbox in TUI",
+            "title": "Make functioning checkbox in TUI.",
             "done": true
         },
         "bdbf199216cd4faf8aa33275fda0e57a": {
@@ -39,7 +39,7 @@
         "422cf702d7874b47830b639dc87c4fe4": {
             "id": "422cf702d7874b47830b639dc87c4fe4",
             "title": "Make tasks file path configurable",
-            "done": false
+            "done": true
         },
         "c925945b2bbb428f81a0f1bb5629fa8b": {
             "id": "c925945b2bbb428f81a0f1bb5629fa8b",

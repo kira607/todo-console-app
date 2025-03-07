@@ -49,6 +49,6 @@ class ContextObject:
             if not valid:
                 logger.warning(f"Path: {config.active_list} is not a valid json file: {error}")
 
-            self._tasks = TasksListWidget(config.active_list)
+            self._tasks = TasksList(config.active_list)
 
         return self._tasks
