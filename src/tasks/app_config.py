@@ -31,9 +31,9 @@ DEFAULT_LIST_PATH = Path(platformdirs.user_data_path(APP_NAME, False), "default.
 """Default tasks list file path."""
 
 DEFAULT_CONFIG = f"""{{
-    "active_list": "{DEFAULT_LIST_PATH}",
+    "active_list": "{DEFAULT_LIST_PATH.as_posix()}",
     "task_lists": [
-        "{DEFAULT_LIST_PATH}"
+        "{DEFAULT_LIST_PATH.as_posix()}"
     ]
 }}
 """
@@ -94,4 +94,3 @@ def save_app_config(config: AppConfig) -> None:
     """Save app config to a file."""
     with CONFIG_FILE_PATH.open("w") as f:
         f.write(config.model_dump_json(indent=4))
-

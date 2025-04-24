@@ -3,6 +3,7 @@
 import logging
 
 import typer
+from rich import print  # noqa: A004
 from rich.console import Console
 
 from tasks.core import TasksList
